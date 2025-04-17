@@ -17,15 +17,16 @@ class MultiViewTimeEncoder(nn.Module):
         self.d_se = d_se
         self.d_out = d_out
 
-        # Trainable frequency parameters
         self.omega_re = nn.Parameter(torch.randn(d_re))
         self.omega_ab = nn.Parameter(torch.randn(d_ab))
 
         # Time semantic encoder (e.g. weekend, holiday)
         self.semantic_encoder = nn.Linear(d_se, d_se)
 
-        # Final projection
-        self.proj = nn.Linear(d_re + d_ab + d_se, d_out)
+        # ここが超重要な修正ポイント！
+        input_dim = d_re * 2 + d_ab * 2 + d_se
+        #print(f"[MTE] input_dim to self.proj: {input_dim}")
+        self.proj = nn.Linear(input_dim, d_out)
 
     def forward(self, t, t_prime, semantic_feat):
         """
