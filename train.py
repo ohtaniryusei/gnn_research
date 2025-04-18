@@ -8,9 +8,11 @@ from utils.data_loader import load_transaction_batch
 
 def train():
     config = {
-        'in_dim': 128,
-        'time_config': (16, 16, 8, 32, 128),  # d_re, d_ab, d_se, d_time, hidden
+    'in_dim': 128,
+    'time_config': (16, 16, 8, 32, 128),
+    'dynamic_type': 'graphmixer'  # ← ここで切り替え可能    
     }
+
 
     model = FullModel(config)
     optimizer = optim.Adam(model.parameters(), lr=0.001)
